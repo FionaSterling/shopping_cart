@@ -2,6 +2,7 @@ $.get('./components/header.html', function(response) {
   $("#nav").html(response);
 });
 
+var shopping_cart = [];
 
 function showProducts(response) {
   console.log(response);
@@ -25,12 +26,11 @@ function showProducts(response) {
     // add card-text with price for each product
     body_html += '<div id="card-text">' + '$' + response.products[i].price + '</div>'
 
-    body_html += '<button class="btn btn-primary center" type="submit">Add To Cart</button>'
+    body_html += '<button onClick="displayCart(' + response.products[i].id + ')" class="btn btn-primary center" type="submit">Add To Cart</button>'
 
     // end each div for card
     body_html += '</div>';
   }
-
 
   // inserting header_html variable into table_head id (on employees.html page)
   $("#card-title").html(header_html);
@@ -68,6 +68,14 @@ function displayCart(response) {
   // close header row
   header_html += '</tr>';
 
+  for (let i = 0; i < shopping_cart.length; i++) {
+    body_html += '<tr><th scope="row">' + '</th>';
+
+    body_html += '<td>'+ shopping_cart[i] + '</td>';
+
+    body_html += '</tr>';
+  }
+
   // inserting header_html variable into table_head id
   $("#table_head").html(header_html);
 
@@ -76,16 +84,15 @@ function displayCart(response) {
 }
 
 
-window.onload = function() {
-  let btns = document.getElementsByClassName('btn');
-  for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener('click', displayCart);
-  }
-}
-
 let url1 = './assets/products.json';
 
-$.get(url1, displayCart);
+// $.get(url1, displayCart);
+
+
+function addToCart(displayCart) {
+  return shopping_cart.push(shopping_cart[i]);
+}
+
 
   // // add new row for each product
   // body_html += '<tr><th scope="row">' + (i + 1) + '</th>';
@@ -93,27 +100,3 @@ $.get(url1, displayCart);
   // body_html += '<td>'+ response.products[i] + '</td>';
   //
   // body_html += '</tr>';
-
-
-  // // loop through data to be added
-  // for (let i = 0; i < response.products.length; i++) {
-  //   // add new row for each product (data)
-  //   body_html += '<tr><th scope="row">' + (i + 1) + '</th>';
-  //
-  //   for (let j = 0; j < headers.length; j++) {
-  //     // set current header
-  //     let cur_head = headers[j];
-  //
-  //     body_html += '<td>' + response.products[i][`${cur_head}`] + '</td>';
-  //   }
-  //
-  //   // end each product row
-  //   body_html += '</tr>';
-
-  // }
-
-  // // inserting header_html variable into table_head id (on employees.html page)
-  // $("#table_head").html(header_html);
-  //
-  // //inserting body_html into table_body id
-  // $("#table_body").html(body_html);
