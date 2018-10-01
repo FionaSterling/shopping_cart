@@ -89,10 +89,29 @@ let url1 = './assets/products.json';
 // $.get(url1, displayCart);
 
 
-function addToCart(displayCart) {
-  return shopping_cart.push(shopping_cart[i]);
+function addToCart(id) {
+  $.get(url1, function(response) {
+    for (let i = 0; i < response.products.length; i++) {
+      curProduct = response.products[i];
+      if (curProduct.id == id) {
+        shopping_cart.push(curProduct);
+        break;
+      }
+    }
+    console.log(shopping_cart);
+  })
 }
 
+
+function addTotal() {
+  for (let i = 0; i < shopping_cart.length; i++) {
+    let total += curProduct.price;
+  }
+}
+
+function displayTotal() {
+  $.get(total);
+}
 
   // // add new row for each product
   // body_html += '<tr><th scope="row">' + (i + 1) + '</th>';
