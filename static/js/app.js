@@ -4,18 +4,22 @@ $.get('./components/header.html', function(response) {
 
 var shopping_cart = [];
 
+
 function showProducts(response) {
   console.log(response);
 
   // html variables to be inserted later
   let header_html = '';
   let body_html = '';
+  let index = 1;
 
   // loop through data to be added
   for (let i = 0; i < response.products.length; i++) {
+    if (index === 1 || index % 3 === 1) {
+      body_html += '<div class="row">';
+    }
 
-    // add new card for each product
-    body_html += '<div class="card">';
+    body_html += '<div class="col-md card">';
 
     // add placeholder image for each product
     body_html += '<img class="center card-img-top" src="http://placehold.it/50x50" alt="Placeholder Image">'
@@ -26,17 +30,26 @@ function showProducts(response) {
     // add card-text with price for each product
     body_html += '<div id="card-text">' + '$' + response.products[i].price + '</div>'
 
-    body_html += '<button onClick="displayCart(' + response.products[i].id + ')" class="btn btn-primary center" type="submit">Add To Cart</button>'
+    body_html += '<button onClick="addToCart(' + response.products[i].id + ')" class="btn btn-primary center" type="submit">Add To Cart</button>'
 
     // end each div for card
     body_html += '</div>';
+
+    if (index % 3 === 0) {
+      // ending div tag for row
+      body_html += '</div>';
+    }
+
+    index += 1;
+
+
   }
 
-  // inserting header_html variable into table_head id (on employees.html page)
-  $("#card-title").html(header_html);
+  // // inserting header_html variable into table_head id (on employees.html page)
+  // $("#items").html(header_html);
 
   //inserting body_html into table_body id
-  $("#card-text").html(body_html);
+  $("#items").html(body_html);
 
 }
 
@@ -49,6 +62,18 @@ $.get(url, showProducts);
 // make cart appear on clicking add to cart
 // document.addEventListener("click", makeCart);
 
+function addToCart(id) {
+  $.get(url1, function(response) {
+    for (let i = 0; i < response.products.length; i++) {
+      curProduct = response.products[i];
+      if (curProduct.id == id) {
+        shopping_cart.push(curProduct);
+        break;
+      }
+    }
+    console.log(shopping_cart);
+  })
+}
 
 function displayCart(response) {
   // grab headers for table
@@ -74,6 +99,8 @@ function displayCart(response) {
     body_html += '<td>'+ shopping_cart[i] + '</td>';
 
     body_html += '</tr>';
+
+    // body_html += '<p>Total: $(total)</p>'
   }
 
   // inserting header_html variable into table_head id
@@ -81,6 +108,8 @@ function displayCart(response) {
 
   //inserting body_html into table_body id
   $("#table_body").html(body_html);
+
+  $.get(url, displayCart)
 }
 
 
@@ -89,23 +118,12 @@ let url1 = './assets/products.json';
 // $.get(url1, displayCart);
 
 
-function addToCart(id) {
-  $.get(url1, function(response) {
-    for (let i = 0; i < response.products.length; i++) {
-      curProduct = response.products[i];
-      if (curProduct.id == id) {
-        shopping_cart.push(curProduct);
-        break;
-      }
-    }
-    console.log(shopping_cart);
-  })
-}
 
 
 function addTotal() {
   for (let i = 0; i < shopping_cart.length; i++) {
-    let total += curProduct.price;
+    let total = curProduct.price;
+    total += curProduct.price;
   }
 }
 
